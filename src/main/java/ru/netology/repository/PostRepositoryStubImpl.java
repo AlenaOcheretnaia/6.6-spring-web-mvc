@@ -12,6 +12,9 @@ import java.util.concurrent.ConcurrentMap;
 
 @Repository
 public class PostRepositoryStubImpl implements PostRepository {
+    //этот метод не потокобезопасен,
+    // так как использует инкрементированиие этой переменной, которая неатомарна
+    //привела решение в другой задаче - если оно верное, перенесу в этот код
     private int count;
     private ConcurrentMap<Long, Post> collectionRequests;
 
@@ -44,7 +47,6 @@ public class PostRepositoryStubImpl implements PostRepository {
                 ++count;
                 newId = count;
             }
-            //newId = count;
             post.setId(newId);
             collectionRequests.put(newId, post);
         } else {
